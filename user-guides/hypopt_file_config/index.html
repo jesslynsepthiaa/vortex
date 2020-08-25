@@ -61,6 +61,23 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Developer Guides <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../developer-guides/custom_backbone_integration/" class="dropdown-item">Custom Backbone Integration</a>
+</li>
+                                    
+<li>
+    <a href="../../developer-guides/custom_model_integration_classification/" class="dropdown-item">Custom Model Integration : Classification</a>
+</li>
+                                    
+<li>
+    <a href="../../developer-guides/custom_model_integration_detection/" class="dropdown-item">Custom Model Integration : Detection</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Modules <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
@@ -106,7 +123,15 @@
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="../../api/vortex.core.pipelines/" class="dropdown-item">vortex.core.pipelines</a>
+    <a href="../../api/vortex.development.core.pipelines/" class="dropdown-item">vortex.development.core.pipelines</a>
+</li>
+                                    
+<li>
+    <a href="../../api/vortex.development.core.factory/" class="dropdown-item">vortex.development.core.factory</a>
+</li>
+                                    
+<li>
+    <a href="../../api/vortex.runtime/" class="dropdown-item">vortex.runtime</a>
 </li>
                                 </ul>
                             </li>
@@ -203,22 +228,20 @@
 <h2 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">&para;</a></h2>
 <p>Flagged with <code>parameters</code> key (list[dict]) in the hypopt config file. This field will contain a list of hyperparameters that will be searched. However, each parameter mentioned in here must be declared first in the experiment file using any initial value. To declare a parameter we use a flattened XML structure with dot (<code>.</code>) reducer.</p>
 <p>For example we want to search the parameter of <code>score_threshold</code> and <code>iou_threshold</code> in which their structure in the experiment file is shown below :</p>
-<pre><code class="yaml">trainer: {
-    ## optional field for validation step
-    validation: {
-        ## passed to validator class
-        args: {
-            score_threshold: 0.9,
-            iou_threshold: 0.2,
-        },
-        val_epoch: 5,
+<pre><code class="yaml">## optional field for validation step
+validator: {
+    ## passed to validator class
+    args: {
+        score_threshold: 0.9,
+        iou_threshold: 0.2,
     },
-}
+    val_epoch: 5,
+},
 </code></pre>
 
 <p>Thus, we declare these parameters in the hypopt config as shown below:</p>
 <pre><code class="yaml">parameters: [
-    trainer.validation.args.score_threshold: {
+    validator.args.score_threshold: {
         suggestion: suggest_discrete_uniform,
         args: {
             low: 0.05,
@@ -226,7 +249,7 @@
             q: 0.025,
         }
     },
-    trainer.validation.args.iou_threshold: {
+    validator.args.iou_threshold: {
         suggestion: suggest_discrete_uniform,
         args: {
             low: 0.05,
@@ -292,18 +315,27 @@
 </ul>
 </li>
 <li>
-<p><code>metric_name</code> (str) : only used if <code>metric_type</code> is set to <code>val</code>. This argument denotes the name of the metric which want to be optimized. The available setting for this argument also related to the model's task</p>
+<p><code>metric_name</code> (str) : only used if <code>metric_type</code> is set to <code>val</code>. This argument denotes the name of the metric which want to be optimized. The available settings for this argument are also related to the model's task</p>
 <ul>
 <li>
-<p>Detection task :</p>
+<p>Detection task (see <a href="https://towardsdatascience.com/breaking-down-mean-average-precision-map-ae462f623a52">this link</a> for further reading) :</p>
 <ul>
-<li><code>mean_ap</code> : using the mean-Average Precision metrics</li>
+<li><code>mean_ap</code> : using the mean-average precision metrics</li>
 </ul>
 </li>
 <li>
-<p>Classification task :</p>
+<p>Classification task (see <a href="https://scikit-learn.org/stable/modules/model_evaluation.html#precision-recall-f-measure-metrics">this link</a> for further reading):</p>
 <ul>
 <li><code>accuracy</code> : using the accuracy metrics</li>
+<li><code>precision (micro)</code> : using the micro-average precision metrics</li>
+<li><code>precision (macro)</code> : using the macro-average precision metrics</li>
+<li><code>precision (weighted)</code> : using the weighted-average precision metrics</li>
+<li><code>recall (micro)</code> : using the micro-average recall metrics</li>
+<li><code>recall (macro)</code> : using the macro-average recall metrics</li>
+<li><code>recall (weighted)</code> : using the weighted-average recall metrics</li>
+<li><code>f1_score (micro)</code> : using the micro-average f1_score metrics</li>
+<li><code>f1_score (macro)</code> : using the macro-average f1_score metrics</li>
+<li><code>f1_score (weighted)</code> : using the weighted-average f1_score metrics</li>
 </ul>
 </li>
 </ul>
@@ -349,18 +381,27 @@
 <p>Arguments : </p>
 <ul>
 <li>
-<p><code>metric_name</code> (str) : denotes the name of the metric which want to be optimized. The available setting for this argument also related to the model's task</p>
+<p><code>metric_name</code> (str) : denotes the name of the metric which want to be optimized. The available settings for this argument are also related to the model's task</p>
 <ul>
 <li>
-<p>Detection task :</p>
+<p>Detection task (see <a href="https://towardsdatascience.com/breaking-down-mean-average-precision-map-ae462f623a52">this link</a> for further reading) :</p>
 <ul>
-<li><code>mean_ap</code> : using the mean-Average Precision metrics</li>
+<li><code>mean_ap</code> : using the mean-average precision metrics</li>
 </ul>
 </li>
 <li>
-<p>Classification task :</p>
+<p>Classification task (see <a href="https://scikit-learn.org/stable/modules/model_evaluation.html#precision-recall-f-measure-metrics">this link</a> for further reading):</p>
 <ul>
 <li><code>accuracy</code> : using the accuracy metrics</li>
+<li><code>precision (micro)</code> : using the micro-average precision metrics</li>
+<li><code>precision (macro)</code> : using the macro-average precision metrics</li>
+<li><code>precision (weighted)</code> : using the weighted-average precision metrics</li>
+<li><code>recall (micro)</code> : using the micro-average recall metrics</li>
+<li><code>recall (macro)</code> : using the macro-average recall metrics</li>
+<li><code>recall (weighted)</code> : using the weighted-average recall metrics</li>
+<li><code>f1_score (micro)</code> : using the micro-average f1_score metrics</li>
+<li><code>f1_score (macro)</code> : using the macro-average f1_score metrics</li>
+<li><code>f1_score (weighted)</code> : using the weighted-average f1_score metrics</li>
 </ul>
 </li>
 </ul>
@@ -421,7 +462,7 @@
 <p>E.g.:</p>
 <pre><code class="yaml">override: {
     trainer.epoch: 10,
-    trainer.validation.val_epoch: 2,
+    validator.val_epoch: 2,
 }
 </code></pre>
 

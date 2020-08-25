@@ -60,6 +60,23 @@
 </li>
                                 </ul>
                             </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Developer Guides <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../developer-guides/custom_backbone_integration/" class="dropdown-item">Custom Backbone Integration</a>
+</li>
+                                    
+<li>
+    <a href="../../developer-guides/custom_model_integration_classification/" class="dropdown-item">Custom Model Integration : Classification</a>
+</li>
+                                    
+<li>
+    <a href="../../developer-guides/custom_model_integration_detection/" class="dropdown-item">Custom Model Integration : Detection</a>
+</li>
+                                </ul>
+                            </li>
                             <li class="dropdown active">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Modules <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
@@ -106,7 +123,15 @@
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="../../api/vortex.core.pipelines/" class="dropdown-item">vortex.core.pipelines</a>
+    <a href="../../api/vortex.development.core.pipelines/" class="dropdown-item">vortex.development.core.pipelines</a>
+</li>
+                                    
+<li>
+    <a href="../../api/vortex.development.core.factory/" class="dropdown-item">vortex.development.core.factory</a>
+</li>
+                                    
+<li>
+    <a href="../../api/vortex.runtime/" class="dropdown-item">vortex.runtime</a>
 </li>
                                 </ul>
                             </li>
@@ -155,6 +180,10 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-level="2"><a href="#nvidia-dali-data-loader" class="nav-link">Nvidia DALI Data Loader</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
               </ul>
             </li>
         </ul>
@@ -163,12 +192,15 @@
                     <div class="col-md-9" role="main">
 
 <h1 id="data-loader">Data Loader<a class="headerlink" href="#data-loader" title="Permanent link">&para;</a></h1>
-<p>This section listed all available <code>dataloader</code> modules configurations. Part of <a href="../../user-guides/experiment_file_config/#dataset"><code>dataset.dataloader</code> configurations</a> in experiment file.</p>
+<p>This section listed all available <a href="../../user-guides/experiment_file_config/#data-loader"><code>dataloader</code></a> modules configurations.</p>
+<p>Vortex data loader module will normalize and resize the input image following <code>preprocess_args</code> configuration in <a href="../../user-guides/experiment_file_config/#model"><code>model</code></a> section. The resize function, will resize the image by the value provided in <code>input_size</code> configuration and pad the image to square by adding black pixel (0,0,0). However the padding implementation will be different depends on the dataloader module (this is subject to change in the future)</p>
 <hr />
 <h2 id="pytorch-data-loader">Pytorch Data Loader<a class="headerlink" href="#pytorch-data-loader" title="Permanent link">&para;</a></h2>
-<p>A standard Pytorch data loader.</p>
+<p>A standard Pytorch data loader. If the provided image data is image path, it will decode the image using OpenCV in the BGR format </p>
+<p>This data loader will pad the image in the shortest side by adding pad pixel in both edge. (E.g. if the shortest side is image's width, it will pad pixel in the left and right side of the image). The implementation is provided by <code>albumentations</code> augmentation <a href="https://albumentations.readthedocs.io/en/latest/api/augmentations.html#albumentations.augmentations.transforms.PadIfNeeded"><code>PadIfNeeded</code></a></p>
+<p>Cannot be used with <code>nvidia_dali</code> augmentation module</p>
 <pre><code class="yaml">dataloader: {
-    dataloader: DataLoader,
+    module: PytorchDataLoader,
     args: {
         num_workers: 0,
         batch_size: 16,
@@ -181,6 +213,29 @@
 <p>Common used arguments :</p>
 <ul>
 <li><code>num_workers</code> (int) : how many subprocesses to use for data loading. 0 means that the data will be loaded in the main process</li>
+<li><code>batch_size</code> (int) : how many samples per batch to load (default: 1)</li>
+<li><code>shuffle</code> (bool) : set to True to have the data reshuffled at every epoch (default: False).</li>
+</ul>
+<hr />
+<h2 id="nvidia-dali-data-loader">Nvidia DALI Data Loader<a class="headerlink" href="#nvidia-dali-data-loader" title="Permanent link">&para;</a></h2>
+<p>A data loader used together with <a href="https://docs.nvidia.com/deeplearning/dali/user-guide/docs/">Nvidia DALI</a> pipeline and must utilize a GPU. The input data provided must be the path to the image (cannot accept numpy array), and it will decode the image on the GPU using <a href="https://docs.nvidia.com/deeplearning/dali/user-guide/docs/supported_ops.html#nvidia.dali.ops.ImageDecoder">ops.ImageDecoder</a> into BGR format.</p>
+<p>This data loader will pad the image in the right-bottom style. The implementation is provided by <a href="https://docs.nvidia.com/deeplearning/dali/user-guide/docs/supported_ops.html#nvidia.dali.ops.Paste">ops.Paste</a></p>
+<p>Can be used with <code>nvidia_dali</code> augmentation module by specifying the module in the first order of <a href="../user-guides/experiment_file_config/#dataset"><code>augmentations</code></a> configuration list</p>
+<pre><code class="yaml">dataloader: {
+    module: DALIDataLoader,
+    args: {
+        num_thread: 1,
+        device_id: 0,
+        batch_size: 16,
+        shuffle: True,
+    },
+}
+</code></pre>
+
+<p>Arguments :</p>
+<ul>
+<li><code>num_thread</code>(int) : Number of CPU threads used by the Nvidia DALI pipeline. (default: 1)</li>
+<li><code>device_id</code> (int) : Id of GPU used by the pipeline. (default: 0)</li>
 <li><code>batch_size</code> (int) : how many samples per batch to load (default: 1)</li>
 <li><code>shuffle</code> (bool) : set to True to have the data reshuffled at every epoch (default: False).</li>
 </ul></div>

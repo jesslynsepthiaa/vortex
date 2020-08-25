@@ -61,6 +61,23 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Developer Guides <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../developer-guides/custom_backbone_integration/" class="dropdown-item">Custom Backbone Integration</a>
+</li>
+                                    
+<li>
+    <a href="../../developer-guides/custom_model_integration_classification/" class="dropdown-item">Custom Model Integration : Classification</a>
+</li>
+                                    
+<li>
+    <a href="../../developer-guides/custom_model_integration_detection/" class="dropdown-item">Custom Model Integration : Detection</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Modules <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
@@ -106,7 +123,15 @@
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="../../api/vortex.core.pipelines/" class="dropdown-item">vortex.core.pipelines</a>
+    <a href="../../api/vortex.development.core.pipelines/" class="dropdown-item">vortex.development.core.pipelines</a>
+</li>
+                                    
+<li>
+    <a href="../../api/vortex.development.core.factory/" class="dropdown-item">vortex.development.core.factory</a>
+</li>
+                                    
+<li>
+    <a href="../../api/vortex.runtime/" class="dropdown-item">vortex.runtime</a>
 </li>
                                 </ul>
                             </li>
@@ -127,7 +152,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../../modules/builtin_dataset/" class="nav-link">
+                                <a rel="next" href="../../developer-guides/custom_backbone_integration/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -190,14 +215,18 @@
 <p>This section will describe how to easily run each of Vortex pipeline in details. For complete pipelines flow please see <a href="../..#overview">Vortex overview section</a></p>
 <hr />
 <h2 id="training-pipeline">Training Pipeline<a class="headerlink" href="#training-pipeline" title="Permanent link">&para;</a></h2>
-<p>This pipeline purpose is to train a deep learning model using the provided dataset. If you need to integrate the training into your own script you can see the <a href="../../api/vortex.core.pipelines/#trainingpipeline">training pipeline API section</a>.</p>
+<p>This pipeline purpose is to train a deep learning model using the provided dataset. If you need to integrate the training into your own script you can see the <a href="../../api/vortex.development.core.pipelines/#trainingpipeline">training pipeline API section</a>.</p>
 <p>To run this pipeline, make sure you've already prepared :</p>
 <ul>
 <li><strong>Dataset</strong> : see <a href="../../modules/builtin_dataset/">this section</a> for built-in datasets, or <a href="../dataset_integration/">this section</a> for external datasets</li>
 <li><strong>Experiment file</strong> : see <a href="../experiment_file_config/">this section</a> to create one</li>
 </ul>
+<p>and additionally, if you want to <strong>resume previous training</strong> or <strong>load pretrained model</strong>, you also need :</p>
+<ul>
+<li><strong>Vortex model's file</strong> <code>*.pth</code> : obtained from previously executed training pipeline which corresponds to the previous mentioned experiment file. Specific checkpoint file on several epoch can be found under <strong>run directory</strong> ( see outputs of this training pipeline section ). This file must be configured in experiment file under <a href="../experiment_file_config/#checkpoint"><code>checkpoint</code></a> section</li>
+</ul>
 <p>You only need to run this command from the command line interface :</p>
-<pre><code class="console">usage: vortex train [-h] -c CONFIG [--no-log]
+<pre><code class="console">usage: vortex train [-h] -c CONFIG [--resume] [--no-log]
 
 Vortex training pipeline; will generate a Pytorch model file
 
@@ -205,6 +234,7 @@ optional arguments:
   -h, --help            show this help message and exit
   -c CONFIG, --config CONFIG
                         path to experiment config file
+  --resume              vortex-saved model path for resume training
   --no-log              disable logging, ignore experiment file config
 </code></pre>
 
@@ -237,17 +267,17 @@ Experiment Log URL : https://www.comet.ml/hyperion-rg/vortex-dev/601f45782a88428
 <li>
 <p><strong>Backup experiment file</strong> : Experiment file will be duplicated and stored under <strong>run directory</strong></p>
 </li>
-<li><strong>Intermediate model weight</strong> : Model’s weight will be dumped into <strong>run directory</strong> every <em>n</em>-epoch which is configured in <code>save_epoch</code> in experiment file with <code>.pth</code> extension</li>
-<li><strong>Final model weight</strong> : Model’s weight after all training epoch is completed will be dumped in the <strong>experiment directory</strong> with <code>.pth</code> extension</li>
+<li><strong>Intermediate model file</strong> : File containing model’s weight and training checkpoint will be dumped into <strong>run directory</strong> every <em>n</em>-epoch which is configured in <code>save_epoch</code> in experiment file with <code>.pth</code> extension</li>
+<li><strong>Final model file</strong> : File containing model's weight and training checkpoint after all training epoch is completed will be dumped in the <strong>experiment directory</strong> with <code>.pth</code> extension</li>
 <li><strong>Experiment log</strong> : If logging is enabled, training metrics will be collected by the logging provider. Additionally if the config file is valid for validation, the validation metrics will also be collected.</li>
 </ul>
 <hr />
 <h2 id="validation-pipeline">Validation Pipeline<a class="headerlink" href="#validation-pipeline" title="Permanent link">&para;</a></h2>
-<p>This pipeline handle the evaluation of the Vortex model (Pytorch state dict <code>.pth</code>) in term of model's performance and resource usage. In addition, this pipeline also generate a visual report. If you need to integrate the validation into your own script you can see the <a href="../../api/vortex.core.pipelines/#pytorchvalidationpipeline">validation pipeline API section</a>.</p>
+<p>This pipeline handle the evaluation of the Vortex model (Pytorch state dict <code>.pth</code>) in term of model's performance and resource usage. In addition, this pipeline also generate a visual report. If you need to integrate the validation into your own script you can see the <a href="../../api/vortex.development.core.pipelines/#pytorchvalidationpipeline">validation pipeline API section</a>.</p>
 <p>To run this pipeline, make sure you've already prepared :</p>
 <ul>
 <li><strong>Validation dataset</strong> : see <a href="../../modules/builtin_dataset/">this section</a> for built-in datasets, or <a href="../dataset_integration/">this section</a> for external datasets</li>
-<li><strong>Experiment file</strong> : see <a href="../experiment_file_config/">this section</a> to create one. Must be valid for validation, make sure <a href="../experiment_file_config/#dataset"><code>dataset.eval</code></a> and <a href="../experiment_file_config/#trainer"><code>trainer.validation</code></a> is set</li>
+<li><strong>Experiment file</strong> : see <a href="../experiment_file_config/">this section</a> to create one. Must be valid for validation, make sure <a href="../experiment_file_config/#dataset"><code>dataset.eval</code></a> and <a href="../experiment_file_config/#trainer"><code>validator</code></a> is set</li>
 <li><strong>Vortex model's file</strong> <code>*.pth</code> : obtained from <a href="#training-pipeline">training pipeline</a> which corresponds to the previous mentioned experiment file</li>
 </ul>
 <p>You only need to run this command from the command line interface :</p>
@@ -287,7 +317,7 @@ optional arguments:
 </ul>
 <hr />
 <h2 id="prediction-pipeline">Prediction Pipeline<a class="headerlink" href="#prediction-pipeline" title="Permanent link">&para;</a></h2>
-<p>This pipeline is used to test and visualize your Vortex model's prediction. If you need to integrate the prediction into your own script you can see the <a href="../../api/vortex.core.pipelines/#pytorchpredictionpipeline">prediction pipeline API section</a>.</p>
+<p>This pipeline is used to test and visualize your Vortex model's prediction. If you need to integrate the prediction into your own script you can see the <a href="../../api/vortex.development.core.pipelines/#pytorchpredictionpipeline">prediction pipeline API section</a>.</p>
 <p>To run this pipeline, make sure you've already prepared :</p>
 <ul>
 <li><strong>Experiment file</strong> : see <a href="../experiment_file_config/">this section</a> to create one</li>
@@ -341,7 +371,7 @@ optional arguments:
 </ul>
 <hr />
 <h2 id="hyperparameters-optimization-pipeline">Hyperparameters Optimization Pipeline<a class="headerlink" href="#hyperparameters-optimization-pipeline" title="Permanent link">&para;</a></h2>
-<p>This pipeline is used to search for optimum hyperparameter to be used for either training pipeline or validation pipeline (parameter in validation pipeline also can be used for prediction pipeline). Basically this pipeline is <a href="https://optuna.org/">Optuna</a> wrapper for Vortex components. If you need to integrate the prediction into your own script you can see the <a href="../../api/vortex.core.pipelines/#hypoptpipeline">hyperparameters optimization pipeline API section</a>.</p>
+<p>This pipeline is used to search for optimum hyperparameter to be used for either training pipeline or validation pipeline (parameter in validation pipeline also can be used for prediction pipeline). Basically this pipeline is <a href="https://optuna.org/">Optuna</a> wrapper for Vortex components. If you need to integrate the prediction into your own script you can see the <a href="../../api/vortex.development.core.pipelines/#hypoptpipeline">hyperparameters optimization pipeline API section</a>.</p>
 <p>To run this pipeline, make sure you've already prepared :</p>
 <ul>
 <li><strong>Hypopt config file</strong> : see <a href="../hypopt_file_config/">this section</a> to create one</li>
@@ -381,7 +411,7 @@ optional arguments:
 </ul>
 <hr />
 <h2 id="graph-export-pipeline">Graph Export Pipeline<a class="headerlink" href="#graph-export-pipeline" title="Permanent link">&para;</a></h2>
-<p>This pipeline is used to export trained Vortex model (or graph) into another graph representation (or Intermediate Representation (IR)). If you need to integrate the graph export pipeline into your own script you can see the <a href="../../api/vortex.core.pipelines/#graphexportpipeline">graph export pipeline API section</a>.</p>
+<p>This pipeline is used to export trained Vortex model (or graph) into another graph representation (or Intermediate Representation (IR)). If you need to integrate the graph export pipeline into your own script you can see the <a href="../../api/vortex.development.core.pipelines/#graphexportpipeline">graph export pipeline API section</a>.</p>
 <p>To run this pipeline, make sure you've already prepared :</p>
 <ul>
 <li><strong>Experiment file</strong> : see <a href="../experiment_file_config/">this section</a> to create one and make sure the <code>exporter</code> section is already configured</li>
@@ -421,11 +451,11 @@ optional arguments:
 </ul>
 <hr />
 <h2 id="ir-validation-pipeline">IR Validation Pipeline<a class="headerlink" href="#ir-validation-pipeline" title="Permanent link">&para;</a></h2>
-<p>This pipeline handle the evaluation of the IR model (<code>*.pt</code> or <code>*.onnx</code>) in term of model's performance and resource usage. In addition, this pipeline also generate a visual report. If you need to integrate the validation into your own script you can see the <a href="../../api/vortex.core.pipelines/#irvalidationpipeline">IR validation pipeline API section</a>.</p>
+<p>This pipeline handle the evaluation of the IR model (<code>*.pt</code> or <code>*.onnx</code>) in term of model's performance and resource usage. In addition, this pipeline also generate a visual report. If you need to integrate the validation into your own script you can see the <a href="../../api/vortex.development.core.pipelines/#irvalidationpipeline">IR validation pipeline API section</a>.</p>
 <p>To run this pipeline, make sure you've already prepared :</p>
 <ul>
 <li><strong>Validation dataset</strong> : see <a href="../../modules/builtin_dataset/">this section</a> for built-in datasets, or <a href="../dataset_integration/">this section</a> for external datasets</li>
-<li><strong>Experiment file</strong> : see <a href="../experiment_file_config/">this section</a> to create one. Must be valid for validation, make sure <a href="../experiment_file_config/#dataset"><code>dataset.eval</code></a> and <a href="../experiment_file_config/#trainer"><code>trainer.validation</code></a> is set</li>
+<li><strong>Experiment file</strong> : see <a href="../experiment_file_config/">this section</a> to create one. Must be valid for validation, make sure <a href="../experiment_file_config/#dataset"><code>dataset.eval</code></a> and <a href="../experiment_file_config/#trainer"><code>validator</code></a> is set</li>
 <li><strong>IR model file</strong> <code>*.pt</code> or <code>*.onnx</code> : obtained from <a href="#graph-export-pipeline">graph export pipeline</a></li>
 <li><strong>IR runtime library and environment</strong> : make sure runtime library and environment is installed (currently runtime library installed together with vortex)</li>
 </ul>
@@ -449,7 +479,7 @@ optional arguments:
                         runtime backend device
   -v, --verbose         verbose prediction output
   --quiet
-  --batch-size BATCH_SIZE
+  -b BATCH_SIZE, --batch-size BATCH_SIZE
                         batch size for validation; NOTE : passed value should
                         be matched with exported model batch size
 </code></pre>
@@ -467,7 +497,7 @@ optional arguments:
 </ul>
 <hr />
 <h2 id="ir-prediction-pipeline">IR Prediction Pipeline<a class="headerlink" href="#ir-prediction-pipeline" title="Permanent link">&para;</a></h2>
-<p>This pipeline is used to test and visualize your IR model's (<code>*.pt</code> or <code>*.onnx</code>) prediction. If you need to integrate the prediction into your own script you can see the <a href="../../api/vortex.core.pipelines/#irpredictionpipeline">IR prediction pipeline API section</a>.</p>
+<p>This pipeline is used to test and visualize your IR model's (<code>*.pt</code> or <code>*.onnx</code>) prediction. If you need to integrate the prediction into your own script you can see the <a href="../../api/vortex.development.core.pipelines/#irpredictionpipeline">IR prediction pipeline API section</a>.</p>
 <p>To run this pipeline, make sure you've already prepared :</p>
 <ul>
 <li><strong>IR model file</strong> <code>*.pt</code> or <code>*.onnx</code> : obtained from <a href="#graph-export-pipeline">graph export pipeline</a></li>

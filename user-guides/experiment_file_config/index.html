@@ -61,6 +61,23 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Developer Guides <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../developer-guides/custom_backbone_integration/" class="dropdown-item">Custom Backbone Integration</a>
+</li>
+                                    
+<li>
+    <a href="../../developer-guides/custom_model_integration_classification/" class="dropdown-item">Custom Model Integration : Classification</a>
+</li>
+                                    
+<li>
+    <a href="../../developer-guides/custom_model_integration_detection/" class="dropdown-item">Custom Model Integration : Detection</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Modules <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
@@ -106,7 +123,15 @@
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="../../api/vortex.core.pipelines/" class="dropdown-item">vortex.core.pipelines</a>
+    <a href="../../api/vortex.development.core.pipelines/" class="dropdown-item">vortex.development.core.pipelines</a>
+</li>
+                                    
+<li>
+    <a href="../../api/vortex.development.core.factory/" class="dropdown-item">vortex.development.core.factory</a>
+</li>
+                                    
+<li>
+    <a href="../../api/vortex.runtime/" class="dropdown-item">vortex.runtime</a>
 </li>
                                 </ul>
                             </li>
@@ -163,7 +188,11 @@
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#reproducibility-and-cudnn-auto-tune-optional" class="nav-link">Reproducibility and cuDNN auto-tune (OPTIONAL)</a>
+            <li class="nav-item" data-level="2"><a href="#device" class="nav-link">Device</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#reproducibility-and-cudnn-auto-tune" class="nav-link">Reproducibility and cuDNN auto-tune</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -171,11 +200,23 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-level="2"><a href="#data-loader" class="nav-link">Data Loader</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             <li class="nav-item" data-level="2"><a href="#trainer" class="nav-link">Trainer</a>
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-level="2"><a href="#validator" class="nav-link">Validator</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             <li class="nav-item" data-level="2"><a href="#model" class="nav-link">Model</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#checkpoint" class="nav-link">Checkpoint</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -227,7 +268,18 @@
 </code></pre>
 
 <hr />
-<h2 id="reproducibility-and-cudnn-auto-tune-optional">Reproducibility and cuDNN auto-tune (OPTIONAL)<a class="headerlink" href="#reproducibility-and-cudnn-auto-tune-optional" title="Permanent link">&para;</a></h2>
+<h2 id="device">Device<a class="headerlink" href="#device" title="Permanent link">&para;</a></h2>
+<p>Flagged with <code>device</code> key (str) in the experiment file. This configuration set device to run experiment. E.g. :</p>
+<pre><code class="yaml">device: 'cuda:0'
+</code></pre>
+
+<p>Arguments :</p>
+<ul>
+<li><code>device</code> (str) : set the device to run the experiment in pipelines, whether using CPU <code>cpu</code> or cuda GPU <code>cuda</code>. To use specific GPU device, append <code>:{i}</code> to <code>cuda</code>, E.g. <code>cuda:0</code> for GPU index 0, <code>cuda:1</code> for GPU index 1</li>
+</ul>
+<hr />
+<h2 id="reproducibility-and-cudnn-auto-tune">Reproducibility and cuDNN auto-tune<a class="headerlink" href="#reproducibility-and-cudnn-auto-tune" title="Permanent link">&para;</a></h2>
+<p><strong>THIS CONFIGURATION IS OPTIONAL (MAY IMPACT TRAINING PERFORMANCE)</strong></p>
 <p>Flagged with <code>seed</code> key (dict) in the experiment file. This configuration setting can be set if the user wants a model training experiment reproducibility. However as noted in <a href="https://pytorch.org/docs/stable/notes/randomness.html">this reference</a>, completely reproducible results are not guaranteed across PyTorch releases, individual commits or different platforms, even with identical seeds. However we still can make the computation deterministic, to produce similar results. For further information, you can check <a href="https://pytorch.org/docs/stable/notes/randomness.html">this link</a>. E.g. :</p>
 <pre><code class="yaml">seed: {
     torch: 0,
@@ -261,10 +313,10 @@
 
 <hr />
 <h2 id="dataset">Dataset<a class="headerlink" href="#dataset" title="Permanent link">&para;</a></h2>
-<p>Flagged with <code>dataset</code> key (dict) in the experiment file. This is the configurations of the dataset, augmentations, and dataloader which will be used in the training. E.g. :</p>
+<p>Flagged with <code>dataset</code> key (dict) in the experiment file. This is the configurations of the dataset to be used in the pipeline, which includes the dataset name for <code>train</code> and <code>eval</code> dataset. E.g. :</p>
 <pre><code class="yaml">dataset: {
     train: {
-        dataset: VOC0712DetectionDataset,
+        name: VOC0712DetectionDataset,
         args: {
             image_set: train,
         },
@@ -292,19 +344,11 @@
         ]
     },
     eval: {
-        dataset: VOC0712DetectionDataset,
+        name: VOC0712DetectionDataset,
         args: {
             image_set: val
         }
     },
-    dataloader: {
-        dataloader: DataLoader,
-        args: {
-            num_workers: 0,
-            batch_size: 16,
-            shuffle: True,
-        },
-    }
 }
 </code></pre>
 
@@ -324,17 +368,33 @@
 </li>
 </ul>
 </li>
+</ul>
+<hr />
+<h2 id="data-loader">Data Loader<a class="headerlink" href="#data-loader" title="Permanent link">&para;</a></h2>
+<p>Flagged with <code>dataloader</code> key (dict) in the experiment file. This is the configurations of dataloader to be used in the training. E.g. :</p>
+<pre><code class="yaml">dataloader: {
+    module: PytorchDataLoader,
+    args: {
+        num_workers: 0,
+        batch_size: 16,
+        shuffle: True,
+    },
+}
+</code></pre>
+
+<p>Arguments :</p>
+<ul>
 <li>
 <p><code>dataloader</code> (dict) : denotes the configuration of the dataset iterator</p>
 <ul>
-<li><code>dataloader</code> (str) : specify the dataloader module which will be used, supported data loader modules is provided at <a href="../../modules/data_loader/">data loader module section</a></li>
-<li><code>args</code> (dict) : the corresponding arguments for selected <code>dataloader</code></li>
+<li><code>module</code> (str) : specify the dataloader module to be used, supported data loader modules is provided at <a href="../../modules/data_loader/">data loader module section</a></li>
+<li><code>args</code> (dict) : the corresponding arguments for selected <code>module</code></li>
 </ul>
 </li>
 </ul>
 <hr />
 <h2 id="trainer">Trainer<a class="headerlink" href="#trainer" title="Permanent link">&para;</a></h2>
-<p>Flagged with <code>trainer</code> key (dict) in the experiment file. This configuration set how we train, validate on training, and several other configurations related to training iterations. E.g. :</p>
+<p>Flagged with <code>trainer</code> key (dict) in the experiment file. This configuration set how we train and several other configurations related to training iterations. E.g. :</p>
 <pre><code class="yaml">trainer: {
     optimizer: {
         method: SGD,
@@ -344,7 +404,7 @@
             weight_decay: 0.0005
         }
     },
-    scheduler: {
+    lr_scheduler: {
         method: CosineLRScheduler,
         args: {
             t_initial: 200,
@@ -357,16 +417,8 @@
             decay_rate: 0.1
         }
     },
-    validation: {
-        args: {
-            score_threshold: 0.9,
-            iou_threshold: 0.2,
-        },
-        val_epoch: 10
-    },
     epoch: 200,
     save_epoch: 1,
-    device: 'cuda:0',
     driver: {
         module: DefaultTrainer,
         args: {
@@ -386,20 +438,43 @@
 </ul>
 </li>
 <li>
-<p><code>scheduler</code> (dict) : methods to adjust the learning rate based on the number of epochs</p>
+<p><code>lr_scheduler</code> (dict) : methods to adjust the learning rate based on the number of epochs</p>
 <ul>
-<li><code>method</code> (str) : scheduler method identifier, supported scheduler methods is provided at <a href="../../modules/scheduler/">scheduler section</a></li>
+<li><code>method</code> (str) : scheduler method identifier, supported scheduler methods is provided at <a href="../../modules/scheduler/">learning rate scheduler section</a></li>
 <li><code>args</code> (dict) : the corresponding arguments to the respective scheduler <code>method</code></li>
 </ul>
 </li>
 <li>
-<p><code>validation</code> (dict) (Optional) : additional parameter for validation process inside the training loop, if not provided in-loop validation process will be skipped. Sub-arguments :</p>
+<p><code>epoch</code> (int) : number of dataset iteration (epoch) being done on the training dataset. 1 epoch is 1 dataset iteration</p>
+</li>
+<li><code>save_epoch</code> (int) : number of epoch before a model checkpoint being saved for backup</li>
+<li>
+<p><code>driver</code> (dict) : the mechanism on how a training is done in a loop ( iterated over <code>n</code> epochs ). Sub-arguments :</p>
+<ul>
+<li><code>module</code> (str) : training driver identifier. Supported training driver methods is provided at <a href="../../modules/train_driver/">training driver section</a></li>
+<li><code>args</code> (dict) : the corresponding arguments to the respective training driver <code>module</code></li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="validator">Validator<a class="headerlink" href="#validator" title="Permanent link">&para;</a></h2>
+<p>Flagged with <code>validator</code> key (dict) in the experiment file. This configuration set the validation process in the training iteration. E.g. :</p>
+<pre><code class="yaml">validator: {
+    args: {
+        score_threshold: 0.9,
+        iou_threshold: 0.2,
+    },
+    val_epoch: 10
+}
+</code></pre>
+
+<p>Arguments :</p>
 <ul>
 <li>
-<p><code>args</code> (dict) : additional arguments for model postprocessing. Dependent on the described model's task.</p>
+<p><code>args</code> (dict) : additional arguments needed for validation process, including but not limited to arguments for model postprocessing which dependent on the model itself. For example :</p>
 <ul>
 <li>
-<p>For detection :</p>
+<p>For several detection models ( if needed ):</p>
 <ul>
 <li>
 <p><code>score_threshold</code> (float) : threshold applied to the model’s predicted object confidence score. Only objects with prediction scores higher than this threshold will be considered true objects, else considered as background.</p>
@@ -417,20 +492,6 @@
 </li>
 <li>
 <p><code>val_epoch</code> (int) : periodic number of epoch when the validation process will be executed in the training loop</p>
-</li>
-</ul>
-</li>
-<li>
-<p><code>epoch</code> (int) : number of dataset iteration (epoch) being done on the training dataset. 1 epoch is 1 dataset iteration</p>
-</li>
-<li><code>save_epoch</code> (int) : number of epoch before a model checkpoint being saved for backup</li>
-<li><code>device</code> (str) : set the training device, whether using CPU : <code>cpu</code> or cuda GPU : <code>cuda</code>. you can add <code>:{i}</code> to <code>cuda</code> to point for specific GPU index <code>{i}</code>, E.g. <code>cuda:0</code> for GPU index 0, <code>cuda:1</code> for GPU index 1</li>
-<li>
-<p><code>driver</code> (dict) : the mechanism on how a training is done in a loop ( iterated over <code>n</code> epochs ). Sub-arguments :</p>
-<ul>
-<li><code>module</code> (str) : training driver identifier. Supported training driver methods is provided at <a href="../../modules/train_driver/">training driver section</a></li>
-<li><code>args</code> (dict) : the corresponding arguments to the respective training driver <code>module</code></li>
-</ul>
 </li>
 </ul>
 <hr />
@@ -459,8 +520,7 @@
     },
     postprocess_args: {
         nms: True,
-    },
-    init_state_dict: 'experiments/outputs/shufflenetv2x100_fpn_ssd_voc2007_512/16575bd31b364539817177ca14147b5d/shufflenetv2x100_fpn_ssd_voc2007_512-epoch-100.pth
+    }
 }
 </code></pre>
 
@@ -484,8 +544,13 @@
 </li>
 <li><code>loss_args</code> (dict) : configuration related to loss calculation hyperparameter which will be used in the training pipeline, which correspond to the respective model <code>name</code> identifier</li>
 <li><code>postprocess_args</code> (dict) : configuration related to postprocess arguments, which correspond to the respective model <code>name</code> identifier</li>
-<li><code>init_state_dict</code> (str) : path to pretrained model, for transfer learning</li>
 </ul>
+<hr />
+<h2 id="checkpoint">Checkpoint<a class="headerlink" href="#checkpoint" title="Permanent link">&para;</a></h2>
+<p>Flagged with <code>checkpoint</code> key (str) in the experiment file. This configuration describe the path to Vortex model checkpoint which will be used for continue interrupted training or transfer learning to different cases with same model configuration. E.g. :</p>
+<pre><code class="yaml">checkpoint: experiments/outputs/shufflenetv2x100_fpn_ssd_voc2007_512/16575bd31b364539817177ca14147b5d/shufflenetv2x100_fpn_ssd_voc2007_512-epoch-10.pth
+</code></pre>
+
 <hr />
 <h2 id="graph-exporter">Graph Exporter<a class="headerlink" href="#graph-exporter" title="Permanent link">&para;</a></h2>
 <p>Flagged with <code>exporter</code> key (list or dict) in the experiment file. This configuration describe the graph exporter which will be used to convert the Pytorch graph into Intermediate Representation (IR) format. To export graph into multiple IR, use list of dict configurations. E.g. :</p>

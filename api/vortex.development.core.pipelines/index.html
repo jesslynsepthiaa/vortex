@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>vortex.core.pipelines - Vortex</title>
+        <title>vortex.development.core.pipelines - Vortex</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -61,6 +61,23 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Developer Guides <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../developer-guides/custom_backbone_integration/" class="dropdown-item">Custom Backbone Integration</a>
+</li>
+                                    
+<li>
+    <a href="../../developer-guides/custom_model_integration_classification/" class="dropdown-item">Custom Model Integration : Classification</a>
+</li>
+                                    
+<li>
+    <a href="../../developer-guides/custom_model_integration_detection/" class="dropdown-item">Custom Model Integration : Detection</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Modules <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
@@ -106,7 +123,15 @@
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="./" class="dropdown-item active">vortex.core.pipelines</a>
+    <a href="./" class="dropdown-item active">vortex.development.core.pipelines</a>
+</li>
+                                    
+<li>
+    <a href="../vortex.development.core.factory/" class="dropdown-item">vortex.development.core.factory</a>
+</li>
+                                    
+<li>
+    <a href="../vortex.runtime/" class="dropdown-item">vortex.runtime</a>
 </li>
                                 </ul>
                             </li>
@@ -127,7 +152,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" class="nav-link disabled">
+                                <a rel="next" href="../vortex.development.core.factory/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -149,7 +174,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-level="1"><a href="#vortexcorepipelines" class="nav-link">vortex.core.pipelines</a>
+            <li class="nav-item" data-level="1"><a href="#vortexdevelopmentcorepipelines" class="nav-link">vortex.development.core.pipelines</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-level="2"><a href="#classes" class="nav-link">Classes</a>
               <ul class="nav flex-column">
@@ -190,7 +215,7 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="vortexcorepipelines">vortex.core.pipelines<a class="headerlink" href="#vortexcorepipelines" title="Permanent link">&para;</a></h1>
+<h1 id="vortexdevelopmentcorepipelines">vortex.development.core.pipelines<a class="headerlink" href="#vortexdevelopmentcorepipelines" title="Permanent link">&para;</a></h1>
 <hr />
 <hr />
 <h2 id="classes">Classes<a class="headerlink" href="#classes" title="Permanent link">&para;</a></h2>
@@ -209,15 +234,16 @@
 <p><strong>Arguments</strong>:</p>
 <ul>
 <li><code>config</code> <em>EasyDict</em> - dictionary parsed from Vortex experiment file</li>
-<li><code>weights</code> <em>Union[str,Path,None], optional</em> - path to selected Vortex model's weight. If set to None, it will                                                       assume that final model weights exist in <strong>experiment directory</strong>.                                                       Defaults to None.</li>
+<li><code>weights</code> <em>Union[str,Path], optional</em> - path to selected Vortex model's weight. If set to None, it will                                                  assume that final model weights exist in <strong>experiment directory</strong>.                                                  Defaults to None.</li>
 </ul>
 <p><strong>Examples</strong>:</p>
-<pre><code class="python">from vortex.utils.parser import load_config
-from vortex.core.pipelines import GraphExportPipeline
+<pre><code class="python">from vortex.development.utils.parser import load_config
+from vortex.development.core.pipelines import GraphExportPipeline
 
 # Parse config
 config = load_config('experiments/config/example.yml')
-graph_exporter=GraphExportPipeline(config=config,weights='experiments/outputs/example/example.pth')
+graph_exporter = GraphExportPipeline(config=config,
+                                     weights='experiments/outputs/example/example.pth')
 </code></pre>
 
 <hr />
@@ -230,7 +256,8 @@ graph_exporter=GraphExportPipeline(config=config,weights='experiments/outputs/ex
 
 <p><strong>Arguments</strong>:</p>
 <ul>
-<li><code>example_input</code> <em>Union[str,Path,None], optional</em> - path to example input image to help graph tracing. Defaults to None.</li>
+<li><code>example_input</code> <em>Union[str,Path], optional</em> - path to example input image to help graph tracing. 
+Defaults to None.</li>
 </ul>
 <p><strong>Returns</strong>:</p>
 <ul>
@@ -264,8 +291,8 @@ result = graph_exporter.run(example_input=example_input)
 <li><code>weights</code> <em>Union[str,Path,None], optional</em> - path to selected Vortex model's weight. If set to None, it will                                                       assume that final model weights exist in <strong>experiment directory</strong>.                                                       Only used for ValidationObjective. Defaults to None.</li>
 </ul>
 <p><strong>Examples</strong>:</p>
-<pre><code class="python">from vortex.core.pipelines import HypOptPipeline
-from vortex.utils.parser.loader import Loader
+<pre><code class="python">from vortex.development.core.pipelines import HypOptPipeline
+from vortex.development.utils.parser.loader import Loader
 import yaml
 
 # Parse config
@@ -277,7 +304,8 @@ with open(config_path) as f:
 with open(optconfig_path) as f:
     optconfig_data = yaml.load(f, Loader=Loader)
 
-graph_exporter=HypOptPipeline(config=config,optconfig=optconfig)
+graph_exporter = HypOptPipeline(config=config,
+                                optconfig=optconfig)
 </code></pre>
 
 <hr />
@@ -292,8 +320,9 @@ graph_exporter=HypOptPipeline(config=config,optconfig=optconfig)
 <li><code>EasyDict</code> - dictionary containing result of the hypopt process</li>
 </ul>
 <p><strong>Examples</strong>:</p>
-<pre><code class="python">graph_exporter=HypOptPipeline(config=config,optconfig=optconfig)
-results=graph_exporter.run()
+<pre><code class="python">graph_exporter = HypOptPipeline(config=config,
+                                optconfig=optconfig)
+results = graph_exporter.run()
 </code></pre>
 
 <hr />
@@ -320,8 +349,8 @@ results=graph_exporter.run()
 <li><code>FileNotFoundError</code> - raise error if selected 'weights' file is not found</li>
 </ul>
 <p><strong>Examples</strong>:</p>
-<pre><code class="python">from vortex.core.pipelines import PytorchPredictionPipeline
-from vortex.utils.parser import load_config
+<pre><code class="python">from vortex.development.core.pipelines import PytorchPredictionPipeline
+from vortex.development.utils.parser import load_config
 
 # Parse config
 config_path = 'experiments/config/example.yml'
@@ -329,7 +358,7 @@ config = load_config(config_path)
 weights_file = 'experiments/outputs/example/example.pth'
 device = 'cuda'
 
-vortex_predictor=PytorchPredictionPipeline(config = config,
+vortex_predictor = PytorchPredictionPipeline(config = config,
                                            weights = weights_file,
                                            device = device)
 </code></pre>
@@ -369,32 +398,45 @@ vortex_predictor=PytorchPredictionPipeline(config = config,
                                            weights = weights_file,
                                            device = device)
 
-### TODO: adding 'input_specs'
-
 ## OR
 vortex_predictor=IRPredictionPipeline(model = model_file,
                                       runtime = runtime)
 
-### You can get model's required parameter by extracting
-### model's 'input_specs' attributes
+# You can get model's required parameter by extracting model's 'input_specs' attributes
 
-input_shape  = vortex_predictor.model.input_specs.shape
+input_shape  = vortex_predictor.model.input_specs['input']['shape']
+
+## `input_specs['input']['shape']` will provide (batch_size,height,width,channel) dimension
+## NOTES : PytorchPredictionPipeline can accept flexible batch size,
+## however the `input_specs['input']['shape']` of the batch_size dimension 
+## will always set to 1, ignore this
+
+# Extract additional run() input parameters specific for each model
+
 additional_run_params = [key for key in vortex_predictor.model.input_specs.keys() if key!='input']
 print(additional_run_params)
 
-#### Assume that the model is detection model
-#### ['score_threshold', 'iou_threshold'] &lt;&lt; this parameter must be provided in run() arguments
+## Assume that the model is detection model
+## ['score_threshold', 'iou_threshold'] &lt;&lt; this parameter must be provided in run() arguments
 
-# Prepare batched input
+# Prepare batched input from image files path
 batch_input = ['image1.jpg','image2.jpg']
 
 ## OR
 import cv2
-batch_input = np.array([cv2.imread('image1.jpg'),cv2.imread('image2.jpg')])
+input_size = input_shape[1] # Assume square input
+image1 = cv2.resize(cv2.imread('image1.jpg'), (input_size,input_size))
+image2 = cv2.resize(cv2.imread('image2.jpg'), (input_size,input_size))
+batch_input = np.array([image1,image2])
 
 results = vortex_predictor.run(images=batch_input,
                                score_threshold=0.9,
                                iou_threshold=0.2)
+
+# Additional process : obtain class_names from model
+class_names = vortex_predictor.model.class_names
+print(class_names)
+
 </code></pre>
 
 <hr />
@@ -415,8 +457,8 @@ results = vortex_predictor.run(images=batch_input,
 <li><code>runtime</code> <em>str, optional</em> - backend runtime to be selected for model's computation. Defaults to 'cpu'.</li>
 </ul>
 <p><strong>Examples</strong>:</p>
-<pre><code class="python">from vortex.core.pipelines import IRPredictionPipeline
-from vortex.utils.parser import load_config
+<pre><code class="python">from vortex.development.core.pipelines import IRPredictionPipeline
+from vortex.development.utils.parser import load_config
 
 # Parse config
 model_file = 'experiments/outputs/example/example.pt' # Model file with extension '.onnx' or '.pt'
@@ -461,69 +503,45 @@ vortex_predictor=PytorchPredictionPipeline(config = config,
                                            weights = weights_file,
                                            device = device)
 
-### TODO: adding 'input_specs'
-
 ## OR
 vortex_predictor=IRPredictionPipeline(model = model_file,
                                       runtime = runtime)
 
-### You can get model's required parameter by extracting
-### model's 'input_specs' attributes
+# You can get model's required parameter by extracting model's 'input_specs' attributes
 
-input_shape  = vortex_predictor.model.input_specs.shape
+input_shape  = vortex_predictor.model.input_specs['input']['shape']
+
+## `input_specs['input']['shape']` will provide (batch_size,height,width,channel) dimension
+## NOTES : PytorchPredictionPipeline can accept flexible batch size,
+## however the `input_specs['input']['shape']` of the batch_size dimension 
+## will always set to 1, ignore this
+
+# Extract additional run() input parameters specific for each model
+
 additional_run_params = [key for key in vortex_predictor.model.input_specs.keys() if key!='input']
 print(additional_run_params)
 
-#### Assume that the model is detection model
-#### ['score_threshold', 'iou_threshold'] &lt;&lt; this parameter must be provided in run() arguments
+## Assume that the model is detection model
+## ['score_threshold', 'iou_threshold'] &lt;&lt; this parameter must be provided in run() arguments
 
-# Prepare batched input
+# Prepare batched input from image files path
 batch_input = ['image1.jpg','image2.jpg']
 
 ## OR
 import cv2
-batch_input = np.array([cv2.imread('image1.jpg'),cv2.imread('image2.jpg')])
+input_size = input_shape[1] # Assume square input
+image1 = cv2.resize(cv2.imread('image1.jpg'), (input_size,input_size))
+image2 = cv2.resize(cv2.imread('image2.jpg'), (input_size,input_size))
+batch_input = np.array([image1,image2])
 
 results = vortex_predictor.run(images=batch_input,
                                score_threshold=0.9,
                                iou_threshold=0.2)
-</code></pre>
 
-<hr />
-<h4 id="runtime_predict"><code>runtime_predict</code><a class="headerlink" href="#runtime_predict" title="Permanent link">&para;</a></h4>
-<pre><code class="python">def runtime_predict(
-      predictor,
-      image : numpy.ndarray,
-      **kwargs,
-)
-</code></pre>
+# Additional process : obtain class_names from model
+class_names = vortex_predictor.model.class_names
+print(class_names)
 
-<p><strong>Arguments</strong>:</p>
-<ul>
-<li><code>predictor</code>- Vortex runtime object</li>
-<li><code>image</code> <em>np.ndarray</em> - array of batched input image(s) with dimension of 4 (n,h,w,c)</li>
-<li><code>kwargs</code> <em>optional</em> - this kwargs is placement for additional input parameters specific to                                 models'task</li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul>
-<li><code>List</code> - list of prediction results</li>
-</ul>
-<p><strong>Examples</strong>:</p>
-<pre><code class="python">from vortex.core.factory import create_runtime_model
-from vortex.core.pipelines import IRPredictionPipeline
-import cv2
-
-model_file = 'experiments/outputs/example/example_bs2.pt' # Model file with extension '.onnx' or '.pt'
-runtime = 'cpu'
-model = create_runtime_model(model_file, runtime)
-
-batch_imgs = np.array([cv2.imread('image1.jpg'),cv2.imread('image2.jpg')])
-
-results = IRPredictionPipeline.runtime_predict(model, 
-                                               batch_imgs,
-                                               score_threshold=0.9,
-                                               iou_threshold=0.2
-                                               )
 </code></pre>
 
 <hr />
@@ -536,27 +554,35 @@ results = IRPredictionPipeline.runtime_predict(model,
       config : easydict.EasyDict,
       config_path : typing.Union[str, pathlib.Path, NoneType] = None,
       hypopt : bool = False,
+      resume : bool = False,
 )
 </code></pre>
 
 <p><strong>Arguments</strong>:</p>
 <ul>
 <li><code>config</code> <em>EasyDict</em> - dictionary parsed from Vortex experiment file</li>
-<li><code>config_path</code> <em>Union[str,Path,None], optional</em> - path to experiment file. Need to be provided for                                                           backup <strong>experiment file</strong>. Defaults to None.</li>
-<li><code>hypopt</code> <em>bool, optional</em> - flag for hypopt, disable several pipeline process. Defaults to False.</li>
+<li><code>config_path</code> <em>Union[str,Path,None], optional</em> - path to experiment file. 
+Need to be provided for backup <strong>experiment file</strong>. 
+Defaults to None.</li>
+<li><code>hypopt</code> <em>bool, optional</em> - flag for hypopt, disable several pipeline process. 
+Defaults to False.</li>
+<li><code>resume</code> <em>bool, optional</em> - flag to resume training. 
+Defaults to False.</li>
 </ul>
 <p><strong>Raises</strong>:</p>
 <ul>
 <li><code>Exception</code> - raise undocumented error if exist</li>
 </ul>
 <p><strong>Examples</strong>:</p>
-<pre><code class="python">from vortex.utils.parser import load_config
-from vortex.core.pipelines import TrainingPipeline
+<pre><code class="python">from vortex.development.utils.parser import load_config
+from vortex.development.core.pipelines import TrainingPipeline
 
 # Parse config
 config_path = 'experiments/config/example.yml'
 config = load_config(config_path)
-train_executor = TrainingPipeline(config=config,config_path=config_path,hypopt=False)
+train_executor = TrainingPipeline(config=config,
+                                  config_path=config_path,
+                                  hypopt=False)
 </code></pre>
 
 <hr />
@@ -576,7 +602,9 @@ train_executor = TrainingPipeline(config=config,config_path=config_path,hypopt=F
 <li><code>EasyDict</code> - dictionary containing loss, val results and learning rates history</li>
 </ul>
 <p><strong>Examples</strong>:</p>
-<pre><code class="python">train_executor = TrainingPipeline(config=config,config_path=config_path,hypopt=False)
+<pre><code class="python">train_executor = TrainingPipeline(config=config,
+                                  config_path=config_path,
+                                  hypopt=False)
 outputs = train_executor.run()
 </code></pre>
 
@@ -604,8 +632,8 @@ outputs = train_executor.run()
 <li><code>hypopt</code> <em>bool, optional</em> - flag for hypopt, disable several pipeline process. Defaults to False.</li>
 </ul>
 <p><strong>Examples</strong>:</p>
-<pre><code class="python">from vortex.utils.parser import load_config
-from vortex.core.pipelines import PytorchValidationPipeline
+<pre><code class="python">from vortex.development.utils.parser import load_config
+from vortex.development.core.pipelines import PytorchValidationPipeline
 
 # Parse config
 config_path = 'experiments/config/example.yml'
@@ -650,8 +678,8 @@ validation_executor = IRValidationPipeline(config=config,
 # Run validation process
 results = validation_executor.run(batch_size = 2)
 
-## OR (Currently for IRValidationPipeline only)
-## 'batch_size' information is also embedded in model.input_specs['input']['shape'][0]
+## OR (for IRValidationPipeline only, PytorchValidationPipeline can accept flexible batch size)
+## 'batch_size' information is embedded in model.input_specs['input']['shape'][0]
 
 batch_size = validation_executor.model.input_specs['input']['shape'][0]
 results = validation_executor.run(batch_size = batch_size)
@@ -685,8 +713,8 @@ results = validation_executor.run(batch_size = batch_size)
 <li><code>RuntimeError</code> - raise error if the provided model file's extension is not '<em>.onnx' or '</em>.pt'</li>
 </ul>
 <p><strong>Examples</strong>:</p>
-<pre><code class="python">from vortex.utils.parser import load_config
-from vortex.core.pipelines import IRValidationPipeline
+<pre><code class="python">from vortex.development.utils.parser import load_config
+from vortex.development.core.pipelines import IRValidationPipeline
 
 # Parse config
 config_path = 'experiments/config/example.yml'
@@ -731,8 +759,8 @@ validation_executor = IRValidationPipeline(config=config,
 # Run validation process
 results = validation_executor.run(batch_size = 2)
 
-## OR (Currently for IRValidationPipeline only)
-## 'batch_size' information is also embedded in model.input_specs['input']['shape'][0]
+## OR (for IRValidationPipeline only, PytorchValidationPipeline can accept flexible batch size)
+## 'batch_size' information is embedded in model.input_specs['input']['shape'][0]
 
 batch_size = validation_executor.model.input_specs['input']['shape'][0]
 results = validation_executor.run(batch_size = batch_size)

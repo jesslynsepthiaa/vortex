@@ -60,6 +60,23 @@
 </li>
                                 </ul>
                             </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Developer Guides <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../developer-guides/custom_backbone_integration/" class="dropdown-item">Custom Backbone Integration</a>
+</li>
+                                    
+<li>
+    <a href="../../developer-guides/custom_model_integration_classification/" class="dropdown-item">Custom Model Integration : Classification</a>
+</li>
+                                    
+<li>
+    <a href="../../developer-guides/custom_model_integration_detection/" class="dropdown-item">Custom Model Integration : Detection</a>
+</li>
+                                </ul>
+                            </li>
                             <li class="dropdown active">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Modules <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
@@ -106,7 +123,15 @@
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="../../api/vortex.core.pipelines/" class="dropdown-item">vortex.core.pipelines</a>
+    <a href="../../api/vortex.development.core.pipelines/" class="dropdown-item">vortex.development.core.pipelines</a>
+</li>
+                                    
+<li>
+    <a href="../../api/vortex.development.core.factory/" class="dropdown-item">vortex.development.core.factory</a>
+</li>
+                                    
+<li>
+    <a href="../../api/vortex.runtime/" class="dropdown-item">vortex.runtime</a>
 </li>
                                 </ul>
                             </li>
@@ -175,11 +200,11 @@
                     <div class="col-md-9" role="main">
 
 <h1 id="learning-rates-scheduler">Learning Rates Scheduler<a class="headerlink" href="#learning-rates-scheduler" title="Permanent link">&para;</a></h1>
-<p>This section listed all available <code>scheduler</code> configuration. Part of <a href="../../user-guides/experiment_file_config/#trainer"><code>trainer</code> configurations</a> in experiment file.</p>
+<p>This section listed all available <code>lr_scheduler</code> configuration. Part of <a href="../../user-guides/experiment_file_config/#trainer"><code>trainer</code> configurations</a> in experiment file.</p>
 <hr />
 <h2 id="pytorch-scheduler">Pytorch Scheduler<a class="headerlink" href="#pytorch-scheduler" title="Permanent link">&para;</a></h2>
 <p>The following example configuration uses the Pytorch <code>StepLR</code> scheduler. You can use the other scheduler by following similar fashion. List of Pytorch supported scheduler can be found in <a href="https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate">this link</a></p>
-<pre><code class="yanml">scheduler: {
+<pre><code class="yaml">lr_scheduler: {
     method: StepLR,
     args: {
         step_size: 50,
@@ -196,7 +221,7 @@
 <li><a href="https://arxiv.org/abs/1608.03983">SGDR: Stochastic Gradient Descent with Warm Restarts</a></li>
 <li><a href="https://github.com/allenai/allennlp/blob/master/allennlp/training/learning_rate_schedulers/cosine.py">allennlp/cosine.py</a></li>
 </ul>
-<pre><code class="yaml">scheduler: {
+<pre><code class="yaml">lr_scheduler: {
     method: CosineLRScheduler,
     args: {
         t_initial: 200,
@@ -229,7 +254,7 @@
 <ul>
 <li><a href="https://arxiv.org/abs/1806.01593">Stochastic Gradient Descent with Hyperbolic-Tangent Decay on Classification</a></li>
 </ul>
-<pre><code class="yaml"> scheduler: {
+<pre><code class="yaml">lr_scheduler: {
     method: TanhLRScheduler,
     args: {
         t_initial: 200,
@@ -266,7 +291,7 @@
 <ul>
 <li><a href="https://github.com/DeNA/PyTorch_YOLOv3">DeNA/PyTorch_YOLOv3: Implementation of YOLOv3 in PyTorch</a></li>
 </ul>
-<pre><code class="yaml">scheduler: {
+<pre><code class="yaml">lr_scheduler: {
     method: StepLRWithBurnIn,
     args: {
         burn_in: 5,

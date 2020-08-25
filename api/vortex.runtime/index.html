@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Graph Exporter - Vortex</title>
+        <title>vortex.runtime - Vortex</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -77,61 +77,61 @@
 </li>
                                 </ul>
                             </li>
-                            <li class="dropdown active">
+                            <li class="dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Modules <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="../builtin_dataset/" class="dropdown-item">Built-in Dataset</a>
+    <a href="../../modules/builtin_dataset/" class="dropdown-item">Built-in Dataset</a>
 </li>
                                     
 <li>
-    <a href="../logging_provider/" class="dropdown-item">Logging Provider</a>
+    <a href="../../modules/logging_provider/" class="dropdown-item">Logging Provider</a>
 </li>
                                     
 <li>
-    <a href="../augmentation/" class="dropdown-item">Augmentations</a>
+    <a href="../../modules/augmentation/" class="dropdown-item">Augmentations</a>
 </li>
                                     
 <li>
-    <a href="../data_loader/" class="dropdown-item">Data Loader</a>
+    <a href="../../modules/data_loader/" class="dropdown-item">Data Loader</a>
 </li>
                                     
 <li>
-    <a href="../scheduler/" class="dropdown-item">Learning Rates Scheduler</a>
+    <a href="../../modules/scheduler/" class="dropdown-item">Learning Rates Scheduler</a>
 </li>
                                     
 <li>
-    <a href="../train_driver/" class="dropdown-item">Training Driver</a>
+    <a href="../../modules/train_driver/" class="dropdown-item">Training Driver</a>
 </li>
                                     
 <li>
-    <a href="../models_zoo/" class="dropdown-item">Models Zoo</a>
+    <a href="../../modules/models_zoo/" class="dropdown-item">Models Zoo</a>
 </li>
                                     
 <li>
-    <a href="../backbones/" class="dropdown-item">Backbones Network</a>
+    <a href="../../modules/backbones/" class="dropdown-item">Backbones Network</a>
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active">Graph Exporter</a>
+    <a href="../../modules/exporter/" class="dropdown-item">Graph Exporter</a>
 </li>
                                 </ul>
                             </li>
-                            <li class="dropdown">
+                            <li class="dropdown active">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="../../api/vortex.development.core.pipelines/" class="dropdown-item">vortex.development.core.pipelines</a>
+    <a href="../vortex.development.core.pipelines/" class="dropdown-item">vortex.development.core.pipelines</a>
 </li>
                                     
 <li>
-    <a href="../../api/vortex.development.core.factory/" class="dropdown-item">vortex.development.core.factory</a>
+    <a href="../vortex.development.core.factory/" class="dropdown-item">vortex.development.core.factory</a>
 </li>
                                     
 <li>
-    <a href="../../api/vortex.runtime/" class="dropdown-item">vortex.runtime</a>
+    <a href="./" class="dropdown-item active">vortex.runtime</a>
 </li>
                                 </ul>
                             </li>
@@ -147,12 +147,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../backbones/" class="nav-link">
+                                <a rel="prev" href="../vortex.development.core.factory/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../../api/vortex.development.core.pipelines/" class="nav-link">
+                                <a rel="next" class="nav-link disabled">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -174,14 +174,18 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-level="1"><a href="#graph-exporter" class="nav-link">Graph Exporter</a>
+            <li class="nav-item" data-level="1"><a href="#vortexruntime" class="nav-link">vortex.runtime</a>
               <ul class="nav flex-column">
-            <li class="nav-item" data-level="2"><a href="#onnx" class="nav-link">ONNX</a>
+            <li class="nav-item" data-level="2"><a href="#functions" class="nav-link">Functions</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="3"><a href="#create_runtime_model" class="nav-link">create_runtime_model</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#torchscript" class="nav-link">Torchscript</a>
+            <li class="nav-item" data-level="3"><a href="#check_available_runtime" class="nav-link">check_available_runtime</a>
               <ul class="nav flex-column">
+              </ul>
+            </li>
               </ul>
             </li>
               </ul>
@@ -191,60 +195,94 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="graph-exporter">Graph Exporter<a class="headerlink" href="#graph-exporter" title="Permanent link">&para;</a></h1>
-<p>This section listed all available <code>exporter</code> configuration. Part of <a href="../../user-guides/experiment_file_config/#graph-exporter">graph exporter section</a> in experiment file.</p>
+<h1 id="vortexruntime">vortex.runtime<a class="headerlink" href="#vortexruntime" title="Permanent link">&para;</a></h1>
 <hr />
-<h2 id="onnx">ONNX<a class="headerlink" href="#onnx" title="Permanent link">&para;</a></h2>
-<p>This module will produce ONNX IR from a trained Vortex model. Further reading : <a href="https://onnx.ai/">onnx.ai</a></p>
-<p>Currently, we provide export support for opset version 9,10, and 11. However it must be noted that not all models and backbones are supported to be converted to ONNX. The list of supported and not supported models and backbones can be found in the COMPATIBILITY REPORT on the repo :</p>
-<ul>
-<li><a href="https://github.com/nodefluxio/vortex/blob/master/COMPATIBILITY_REPORT_opset9.md">COMPATIBILITY REPORT Opset Version 9</a></li>
-<li><a href="https://github.com/nodefluxio/vortex/blob/master/COMPATIBILITY_REPORT_opset10.md">COMPATIBILITY REPORT Opset Version 10</a></li>
-<li><a href="https://github.com/nodefluxio/vortex/blob/master/COMPATIBILITY_REPORT_opset11.md">COMPATIBILITY REPORT Opset Version 11</a></li>
-</ul>
-<p>E.g. :</p>
-<pre><code class="yaml">exporter: {
-    module: onnx,
-    args: {
-        n_batch: 4,
-        opset_version: 11,
-        filename: somemodel_bs4
-    },
-}
+<hr />
+<h2 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h2>
+<hr />
+<hr />
+<h3 id="create_runtime_model">create_runtime_model<a class="headerlink" href="#create_runtime_model" title="Permanent link">&para;</a></h3>
+<p>Functions to create runtime model</p>
+<pre><code class="python">def create_runtime_model(
+      model_path : typing.Union[str, pathlib.Path],
+      runtime : str,
+      output_name = ['output'],
+      *args,
+      **kwargs,
+)
 </code></pre>
 
-<p>Arguments : </p>
+<p><strong>Arguments</strong>:</p>
 <ul>
-<li><code>n_batch</code> (int) : number of input batches that can be processed by this model at a time. An IR graph input batch size must be pre configured during export and cannot be modified afterwise</li>
-<li><code>opset_version</code> (int) : selected ONNX opset version. For complete information check this link</li>
-<li><code>filename</code> (str) : A new filename which will be given to the exported IR with <code>.onnx</code> suffix. If not given, the default is <code>{experiment_name}.onnx</code></li>
+<li><code>model_path</code> <em>Union[str, Path]</em> - Path to Intermediate Representation (IR) model file</li>
+<li><code>runtime</code> <em>str</em> - Backend runtime to be used, e.g. : 'cpu' or 'cuda' (Depends on available runtime options)</li>
+<li><code>output_name</code> <em>list, optional</em> - Runtime output(s) variable name. Defaults to ["output"].</li>
 </ul>
-<p>Outputs :</p>
+<p><strong>Returns</strong>:</p>
 <ul>
-<li>ONNX IR : ONNX file model <code>(*.onnx)</code> will be produced at experiment output directory</li>
+<li><code>Type[BaseRuntime]</code> - Runtime model objects based on IR file model's type and selected <code>runtime</code></li>
 </ul>
-<hr />
-<h2 id="torchscript">Torchscript<a class="headerlink" href="#torchscript" title="Permanent link">&para;</a></h2>
-<p>This module will produce Torchscript IR from a trained Vortex model. Further reading : <a href="https://pytorch.org/docs/stable/jit.html">torchscript</a></p>
-<p>E.g. :</p>
-<pre><code class="yaml">exporter: {
-    module: torchscript,
-    args: {
-        n_batch: 4,
-        filename: somemodel_bs4
-    },
-}
+<p><strong>Raises</strong>:</p>
+<ul>
+<li><code>RuntimeError</code> - Raises if selected <code>runtime</code> is not available</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<pre><code class="python">from vortex.runtime import create_runtime_model
+import numpy as np
+import cv2
+
+model_path = 'tests/output_test/test_classification_pipelines/test_classification_pipelines.onnx'
+
+runtime_model = create_runtime_model(
+    model_path = model_path,
+    runtime = 'cpu'
+)
+
+print(type(runtime_model))
+
+## Get model's input specifications and additional inferencing parameters
+
+print(runtime_model.input_specs)
+
+# Inferencing example
+
+input_shape = runtime_model.input_specs['input']['shape']
+batch_imgs = np.array([cv2.resize(cv2.imread('tests/images/cat.jpg'),(input_shape[2],input_shape[1]))])
+
+## Make sure the shape of input data is equal to input specifications
+assert batch_imgs.shape == tuple(input_shape)
+
+## Additional parameters can be inspected from input_specs,
+## E.g. `score_threshold` or `iou_threshold` for object detection
+additional_input_parameters = {}
+
+## Inference is done by utilizing __call__ method
+prediction_results = runtime_model(batch_imgs,
+                                    **additional_input_parameters)
+
+print(prediction_results)
 </code></pre>
 
-<p>Arguments : </p>
+<hr />
+<hr />
+<h3 id="check_available_runtime">check_available_runtime<a class="headerlink" href="#check_available_runtime" title="Permanent link">&para;</a></h3>
+<p>Function to check current environment's available runtime</p>
+<pre><code class="python">def check_available_runtime(
+)
+</code></pre>
+
+<p><strong>Returns</strong>:</p>
 <ul>
-<li><code>n_batch</code> (int) : number of input batches that can be processed by this model at a time. An IR graph input batch size must be pre configured during export and cannot be modified afterwise</li>
-<li><code>filename</code> (str) : A new filename which will be given to the exported IR with <code>.pt</code> suffix. If not given, the default is <code>{experiment_name}.pt</code></li>
+<li><code>dict</code> - Dictionary containing status of available runtime</li>
 </ul>
-<p>Outputs :</p>
-<ul>
-<li>Torhscript IR : Torchscript file model <code>(*.pt)</code> will be produced at experiment output directory</li>
-</ul></div>
+<p><strong>Examples</strong>:</p>
+<pre><code class="python">from vortex.runtime import check_available_runtime
+
+available_runtime = check_available_runtime()
+print(available_runtime)
+</code></pre>
+
+<hr /></div>
             </div>
         </div>
 
